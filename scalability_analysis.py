@@ -1,21 +1,26 @@
 import matplotlib.pyplot as plt
 import time
+import numpy as np
 from sklearn.model_selection import TimeSeriesSplit
 
 def scalabilty_analysis(estimator, X, y):
     """if your data needs scaled for your model, make sure you apply that in a pipeline then use
     pipeline as your estimator."""
-    ss = ["0.2", "0.4", "0.6", "0.8", "1.0"] 
-    train_time = []
-    tss = TimeSeriesSplit(n_splits = 5)       
-    for i, (split_idx, _) in enumerate(tss.split(X, y)):        # creates 5 subsamples at "0.2", "0.4", "0.6", "0.8", "1.0"
-        Xs = X.iloc[split_idx,:] 
-        ys = y.iloc[split_idx]
-        t0 = time.time()
-        estimator.fit(Xs, ys[ys.columns[0]])
-        train_time.append((time.time() - t0)*1000)
+    tt = np.empty((3,5))
+    ss = np.arange(0,1,0.2)
+    for j in range(0,3):
+        train_time = []
+        tss = TimeSeriesSplit(n_splits = 5)       
+        for i, (split_idx, _) in enumerate(tss.split(X, y)):        # creates 5 subsamples at "0.2", "0.4", "0.6", "0.8", "1.0"
+            Xs = X.iloc[split_idx,:] 
+            ys = y.iloc[split_idx]
+            t0 = time.time()
+            estimator.fit(Xs, ys[ys.columns[0]])
+            train_time.append((time.time() - t0)*1000)
+        tt[j,:] = train_time
+    avg_tt = tt.mean(axis=0)    
     plt.figure(figsize=(8,6))
-    plt.plot(ss, train_time, '-o')
+    plt.plot(ss, avg_tt, '-o')
     plt.xlabel("Relative Training Sample Size", fontsize=12)
     plt.ylabel("Train Time (ms)", fontsize=12)
     plt.grid()
