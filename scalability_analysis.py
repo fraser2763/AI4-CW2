@@ -1,0 +1,21 @@
+import matplotlib.pyplot as plt
+import time
+from sklearn.model_selection import TimeSeriesSplit
+
+def scalabilty_analysis(estimator, X, y):
+    ss = ["0.2", "0.4", "0.6", "0.8", "1.0"] 
+    train_time = []
+    tss = TimeSeriesSplit(n_splits = 5)       
+    for i, (split_idx, _) in enumerate(tss.split(X, y)):        # creates 5 subsamples at "0.2", "0.4", "0.6", "0.8", "1.0"
+        Xs = X.iloc[split_idx,:] 
+        ys = y.iloc[split_idx]
+        t0 = time.time()
+        estimator.fit(Xs, ys[ys.columns[0]])
+        train_time.append((time.time() - t0)*1000)
+    plt.figure(figsize=(8,6))
+    plt.plot(ss, train_time, '-o')
+    plt.xlabel("Relative Training Sample Size", fontsize=12)
+    plt.ylabel("Train Time (ms)", fontsize=12)
+    plt.grid()
+    plt.title("Scalability Analysis of Train Time", fontsize=15)
+    plt.show()
