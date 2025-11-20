@@ -7,7 +7,7 @@ def scalabilty_analysis(estimator, X, y):
     """if your data needs scaled for your model, make sure you apply that in a pipeline then use
     pipeline as your estimator."""
     tt = np.empty((5,5))
-    ss = np.arange(0,1,0.2)
+    ss = np.array([0.2,0.4,0.6,0.8,1.0])
     for j in range(0,5):
         train_time = []
         tss = TimeSeriesSplit(n_splits = 5)       
