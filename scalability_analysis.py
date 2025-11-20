@@ -3,9 +3,10 @@ import time
 import numpy as np
 from sklearn.model_selection import TimeSeriesSplit
 
-def scalabilty_analysis(estimator, X, y):
+def scalabilty_analysis(estimator, X, y, model_name: str):
     """if your data needs scaled for your model, make sure you apply that in a pipeline then use
-    pipeline as your estimator."""
+    pipeline as your estimator. 
+    Model name changes title of graph"""
     tt = np.empty((5,5))
     ss = np.array([0.2,0.4,0.6,0.8,1.0])
     for j in range(0,5):
@@ -24,6 +25,5 @@ def scalabilty_analysis(estimator, X, y):
     plt.xlabel("Relative Training Sample Size", fontsize=12)
     plt.ylabel("Train Time (ms)", fontsize=12)
     plt.grid()
-    plt.title("Scalability Analysis of Train Time", fontsize=15)
+    plt.title(f"Scalability Analysis of Train Time - {model_name}", fontsize=15)
     plt.show()
-
