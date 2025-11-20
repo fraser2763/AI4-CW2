@@ -6,9 +6,9 @@ from sklearn.model_selection import TimeSeriesSplit
 def scalabilty_analysis(estimator, X, y):
     """if your data needs scaled for your model, make sure you apply that in a pipeline then use
     pipeline as your estimator."""
-    tt = np.empty((3,5))
+    tt = np.empty((5,5))
     ss = np.arange(0,1,0.2)
-    for j in range(0,3):
+    for j in range(0,5):
         train_time = []
         tss = TimeSeriesSplit(n_splits = 5)       
         for i, (split_idx, _) in enumerate(tss.split(X, y)):        # creates 5 subsamples at "0.2", "0.4", "0.6", "0.8", "1.0"
